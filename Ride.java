@@ -13,5 +13,15 @@ public class Ride {
         totalDistance = startIntersection.distance(finishIntersection);
     }
 
+    public Intersection getStart(){
+        return startIntersection;
+    }
+
+    public Intersection geFinish(){
+        return startIntersection;
+    }
+
+
+
 
 }

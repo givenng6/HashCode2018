@@ -36,4 +36,12 @@ public class Ride {
     public int getRideID() {
         return rideID;
     }
+
+    public Intersection getFinishIntersection() {
+        return finishIntersection;
+    }
+
+    public Intersection getStartIntersection() {
+        return startIntersection;
+    }
 }

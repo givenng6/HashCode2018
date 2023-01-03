@@ -76,6 +76,9 @@ public class Main{
         assignVehicles(bookings, "B", cityB);
         assignVehicles(bookings, "C", cityC);
         assignVehicles(bookings, "D", cityD);
+
+        Simulation simulation = new Simulation(bookings, totalSteps);
+        simulation.start();
     }
 
     public static String getCity(int startX, int startY, int finishX, int finishY, int sizeX, int sizeY){
@@ -91,7 +94,6 @@ public class Main{
         }else{
             return "D";
         }
-
     }
 
     public static void classifier(Bookings bookings, Ride ride, int sizeX, int sizeY){

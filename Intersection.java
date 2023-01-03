@@ -26,4 +26,8 @@ public class Intersection {
 
         return differenceX + differenceY;
     }
+
+    public boolean arrived(Intersection intersection){
+        return intersection.intersectionY == intersectionY && intersection.intersectionX == intersectionX;
+    }
 }

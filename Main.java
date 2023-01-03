@@ -1,13 +1,13 @@
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
 
 public class Main{
 
     public static void main(String[] args){
-
-        ArrayList<Vehicle> fleet = new ArrayList<>();
         Bookings bookings = new Bookings();
 
         int cityRows = 0;
@@ -47,16 +47,35 @@ public class Main{
                 classifier(bookings, ride, cityCols, cityRows);
             }
 
-            for(int i = 0; i < numVehicles; i++){
-                fleet.add(new Vehicle(i));
-            }
-
         }catch(FileNotFoundException e){
             System.out.println("File Not Found");
         }
 
-        bookings.sizes();
+        int cityA = (bookings.getDistribution()[0] * numVehicles) / numRides;
+        int cityB = (bookings.getDistribution()[1] * numVehicles) / numRides;
+        int cityC = (bookings.getDistribution()[2] * numVehicles) / numRides;
+        int cityD = (bookings.getDistribution()[3] * numVehicles) / numRides;
 
+        int cities = cityA + cityB + cityC + cityD;
+
+        int clock = 0;
+        for(int i = cities; i < numVehicles; i++){
+            if(clock == 0){
+                cityA++;
+            }else if(clock == 1){
+                cityB++;
+            }else if(clock == 2){
+                cityC++;
+            }else if(clock == 3){
+                cityD++;
+                clock = 0;
+            }
+        }
+
+        assignVehicles(bookings, "A", cityA);
+        assignVehicles(bookings, "B", cityB);
+        assignVehicles(bookings, "C", cityC);
+        assignVehicles(bookings, "D", cityD);
     }
 
     public static String getCity(int startX, int startY, int finishX, int finishY, int sizeX, int sizeY){
@@ -84,6 +103,12 @@ public class Main{
 
         String city = getCity(startX, startY, finishX, finishY, sizeX, sizeY);
         bookings.addRide(ride, city);
+    }
+
+    public static void assignVehicles(Bookings bookings, String city, int size){
+        for(int i = 0; i < size; i++){
+            bookings.addVehicle(new Vehicle(i, city), city);
+        }
     }
 }
 

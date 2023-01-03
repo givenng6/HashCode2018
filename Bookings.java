@@ -3,11 +3,17 @@ import java.util.ArrayList;
 public class Bookings {
 
     private ArrayList<Ride> cityA, cityB, cityC, cityD;
+    private ArrayList<Vehicle> fleetA, fleetB, fleetC, fleetD;
     public Bookings(){
         cityA = new ArrayList<>();
         cityB = new ArrayList<>();
         cityC = new ArrayList<>();
         cityD = new ArrayList<>();
+
+        fleetA = new ArrayList<>();
+        fleetB = new ArrayList<>();
+        fleetC = new ArrayList<>();
+        fleetD = new ArrayList<>();
     }
 
     public ArrayList<Ride> getCityA() {
@@ -35,10 +41,16 @@ public class Bookings {
         }
     }
 
-    public void sizes(){
-        System.out.println(cityA.size());
-        System.out.println(cityB.size());
-        System.out.println(cityC.size());
-        System.out.println(cityD.size());
+    public void addVehicle(Vehicle vehicle, String city){
+        switch (city){
+            case "A" -> fleetA.add(vehicle);
+            case "B" -> fleetB.add(vehicle);
+            case "C" -> fleetC.add(vehicle);
+            case "D" -> fleetD.add(vehicle);
+        }
+    }
+
+    public int[] getDistribution(){
+        return new int[] {cityA.size(), cityB.size(), cityC.size(), cityD.size()};
     }
 }

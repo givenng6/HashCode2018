@@ -5,7 +5,7 @@ public class Vehicle {
     private int vehicleID;
     private Ride currentRide;
 
-    public Vehicle(int vehicleID){
+    public Vehicle(int vehicleID, String city){
         intersection = new Intersection(0, 0);
         this.vehicleID = vehicleID;
         currentRide = null;

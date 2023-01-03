@@ -7,11 +7,11 @@ public class Ride {
         this.rideID = rideID;
         this.earliestStart = earliestStart;
         this.latestFinish = latestFinish;
-        startIntersection = new Intersection(startX, startX);
+        startIntersection = new Intersection(startX, startY);
         finishIntersection = new Intersection(finishX, finishY);
-
         totalDistance = startIntersection.distance(finishIntersection);
     }
+
 
     public Intersection getStart(){
         return startIntersection;
@@ -21,7 +21,19 @@ public class Ride {
         return startIntersection;
     }
 
+    public int getEarliestStart() {
+        return earliestStart;
+    }
 
+    public int getLatestFinish() {
+        return latestFinish;
+    }
 
+    public int getTotalDistance() {
+        return totalDistance;
+    }
 
+    public int getRideID() {
+        return rideID;
+    }
 }

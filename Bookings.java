@@ -32,21 +32,38 @@ public class Bookings {
         return cityD;
     }
 
-    public void addRide(Ride ride, String city){
+    public ArrayList<Vehicle> getFleetA() {
+        return fleetA;
+    }
+
+    public ArrayList<Vehicle> getFleetB() {
+        return fleetB;
+    }
+
+    public ArrayList<Vehicle> getFleetC() {
+        return fleetC;
+    }
+
+    public ArrayList<Vehicle> getFleetD() {
+        return fleetD;
+    }
+
+
+    public void addRide(Ride ride, City city){
         switch (city){
-            case "A" -> cityA.add(ride);
-            case "B" -> cityB.add(ride);
-            case "C" -> cityC.add(ride);
-            case "D" -> cityD.add(ride);
+            case CITY_A -> cityA.add(ride);
+            case CITY_B -> cityB.add(ride);
+            case CITY_C -> cityC.add(ride);
+            case CITY_D -> cityD.add(ride);
         }
     }
 
-    public void addVehicle(Vehicle vehicle, String city){
+    public void addVehicle(Vehicle vehicle, City city){
         switch (city){
-            case "A" -> fleetA.add(vehicle);
-            case "B" -> fleetB.add(vehicle);
-            case "C" -> fleetC.add(vehicle);
-            case "D" -> fleetD.add(vehicle);
+            case CITY_A -> fleetA.add(vehicle);
+            case CITY_B -> fleetB.add(vehicle);
+            case CITY_C -> fleetC.add(vehicle);
+            case CITY_D -> fleetD.add(vehicle);
         }
     }
 

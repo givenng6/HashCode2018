@@ -1,6 +1,5 @@
 public class Simulation {
 
-    private enum move{up, down, left, right};
     private int totalSteps;
     private Bookings bookings;
 
@@ -10,6 +9,12 @@ public class Simulation {
     }
 
     public void start(){
+        for(int i = 0; i < totalSteps; i++){
+
+        }
+    }
+
+    public void assignRidesToVehicles(){
 
     }
 
@@ -20,13 +25,13 @@ public class Simulation {
         int nextIntersectionX = vehicle.getNextIntersection().getIntersectionX();
         int nextIntersectionY = vehicle.getNextIntersection().getIntersectionY();
 
-        move direction = direction(intersectionX, intersectionY, nextIntersectionX, nextIntersectionY);
+        Direction direction = direction(intersectionX, intersectionY, nextIntersectionX, nextIntersectionY);
 
         switch (direction){
-            case up -> vehicle.getIntersection().updateIntersection(intersectionX, intersectionY - 1);
-            case down -> vehicle.getIntersection().updateIntersection(intersectionX, intersectionY + 1);
-            case left -> vehicle.getIntersection().updateIntersection(intersectionX - 1, intersectionY);
-            case right -> vehicle.getIntersection().updateIntersection(intersectionX + 1, intersectionY - 1);
+            case UP -> vehicle.getIntersection().updateIntersection(intersectionX, intersectionY - 1);
+            case DOWN -> vehicle.getIntersection().updateIntersection(intersectionX, intersectionY + 1);
+            case LEFT -> vehicle.getIntersection().updateIntersection(intersectionX - 1, intersectionY);
+            case RIGHT -> vehicle.getIntersection().updateIntersection(intersectionX + 1, intersectionY - 1);
         }
 
         boolean hasArrived = vehicle.getIntersection().arrived(vehicle.getNextIntersection());
@@ -43,7 +48,15 @@ public class Simulation {
 
     }
 
-    private move direction(int x, int y, int nextX, int nextY){
-        return move.down;
+    private Direction direction(int x, int y, int nextX, int nextY){
+        if(x > nextX){
+            return Direction.LEFT;
+        }else if(x < nextX){
+            return Direction.RIGHT;
+        }else if(y > nextY){
+            return Direction.DOWN;
+        }else{
+            return Direction.UP;
+        }
     }
 }

@@ -72,27 +72,27 @@ public class Main{
             }
         }
 
-        assignVehicles(bookings, "A", cityA);
-        assignVehicles(bookings, "B", cityB);
-        assignVehicles(bookings, "C", cityC);
-        assignVehicles(bookings, "D", cityD);
+        assignVehicles(bookings, City.CITY_A, cityA);
+        assignVehicles(bookings, City.CITY_B, cityB);
+        assignVehicles(bookings, City.CITY_C, cityC);
+        assignVehicles(bookings, City.CITY_D, cityD);
 
         Simulation simulation = new Simulation(bookings, totalSteps);
         simulation.start();
     }
 
-    public static String getCity(int startX, int startY, int finishX, int finishY, int sizeX, int sizeY){
+    public static City getCity(int startX, int startY, int finishX, int finishY, int sizeX, int sizeY){
         int halfY = sizeY / 2;
         int halfX = sizeX / 2;
 
         if(startX <= halfX && startY >= halfY){
-            return "A";
+            return City.CITY_A;
         }else if(startX >= halfX && startY >= halfY){
-            return  "B";
+            return  City.CITY_B;
         }else if(startX <= halfX) {
-            return "C";
+            return City.CITY_C;
         }else{
-            return "D";
+            return City.CITY_D;
         }
     }
 
@@ -103,11 +103,11 @@ public class Main{
         int finishX = ride.geFinish().getIntersectionX();
         int finishY = ride.geFinish().getIntersectionY();
 
-        String city = getCity(startX, startY, finishX, finishY, sizeX, sizeY);
+        City city = getCity(startX, startY, finishX, finishY, sizeX, sizeY);
         bookings.addRide(ride, city);
     }
 
-    public static void assignVehicles(Bookings bookings, String city, int size){
+    public static void assignVehicles(Bookings bookings, City city, int size){
         for(int i = 0; i < size; i++){
             bookings.addVehicle(new Vehicle(i, city), city);
         }

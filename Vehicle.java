@@ -5,6 +5,7 @@ public class Vehicle {
     private boolean busy, pickup;
     private int vehicleID;
     private Ride currentRide;
+    private City city;
 
     public Vehicle(int vehicleID, City city){
         intersection = new Intersection(0, 0);
@@ -13,11 +14,14 @@ public class Vehicle {
         currentRide = null;
         busy = false;
         pickup = false;
+        this.city = city;
     }
 
     public int getVehicleID(){
+
         return vehicleID;
     }
+
 
     public boolean isBusy() {
         return busy;
@@ -33,8 +37,8 @@ public class Vehicle {
 
     public void assignRide(Ride currentRide){
         busy = true;
-        pickup = true;
         this.currentRide = currentRide;
+        this.nextIntersection = currentRide.getStartIntersection();
     }
 
     public Ride getCurrentRide(){
@@ -46,12 +50,12 @@ public class Vehicle {
         busy = false;
     }
 
-    public Intersection getIntersection(){
-        return intersection;
-    }
-
     public void setNextIntersection(Intersection nextIntersection) {
         this.nextIntersection = nextIntersection;
+    }
+
+    public Intersection getIntersection(){
+        return intersection;
     }
 
     public Intersection getNextIntersection() {

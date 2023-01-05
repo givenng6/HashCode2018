@@ -18,27 +18,36 @@ public class Simulation {
 
     public void start(){
         for(int i = 0; i < totalSteps; i++){
-            assignRideToVehicle(bookings.getCityA(), bookings.getFleetA(), i);
-            assignRideToVehicle(bookings.getCityB(), bookings.getFleetB(), i);
-            assignRideToVehicle(bookings.getCityC(), bookings.getFleetC(), i);
-            assignRideToVehicle(bookings.getCityD(), bookings.getFleetD(), i);
+            assignRideToVehicle(bookings.getCityA(), bookings.getFleetA());
+            assignRideToVehicle(bookings.getCityB(), bookings.getFleetB());
+            assignRideToVehicle(bookings.getCityC(), bookings.getFleetC());
+            assignRideToVehicle(bookings.getCityD(), bookings.getFleetD());
 
             for (int j = 0; j < vehicles.size(); j++){
                 makeMove(vehicles.get(j), i);
             }
-
         }
 
-        System.out.println(totalRides);
+        System.out.println("Rides completed " + totalRides);
     }
 
     private Vehicle closetVehicle(Ride ride, ArrayList<Vehicle> vehicles){
         // TODO find closet vehicle to ride
+        Vehicle closeVehicle = vehicles.get(0);
+        int distance = closeVehicle.distance(ride.getStartIntersection());
 
-        return vehicles.get(0);
+        for(int i = 1; i < vehicles.size(); i++){
+            Vehicle vehicle = vehicles.get(i);
+
+            if(vehicle.distance(ride.getStartIntersection()) < distance){
+                closeVehicle = vehicle;
+            }
+        }
+
+        return closeVehicle;
     }
 
-    private void assignRideToVehicle(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles, int val){
+    private void assignRideToVehicle(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles){
         if(rides.size() > 0 && vehicles.size() > 0) {
             Ride ride = rides.get(0);
             rides.remove(ride);
@@ -49,12 +58,13 @@ public class Simulation {
 
             this.vehicles.add(vehicle);
             vehicles.remove(vehicle);
+            assignRideToVehicle(rides, vehicles);
         }
 
         // TODO Fix out of bound exception
-//        if(vehicles.size() > rides.size()){
-//            allocateVehicles( vehicles.size() - rides.size(), vehicles);
-//        }
+        if(vehicles.size() > rides.size()){
+            allocateVehicles( vehicles.size() - rides.size(), vehicles);
+        }
     }
 
     private void allocateVehicles(int size, ArrayList<Vehicle> vehicles){
@@ -77,26 +87,28 @@ public class Simulation {
         for(int i = 0; i < size; i++){
             if(count == 0){
                 count++;
-                allocateVehicles(fleetA, vehicles, fleetA.get(0).getCity());
+                allocateVehicles(sizeA, fleetA, vehicles);
             }else if(count == 1){
                 count++;
-                allocateVehicles(fleetB, vehicles, fleetB.get(0).getCity());
+                allocateVehicles(sizeB, fleetB, vehicles);
             }else if(count == 2){
                 count = 0;
-                allocateVehicles(fleetC, vehicles, fleetC.get(0).getCity());
+                allocateVehicles(sizeC, fleetC, vehicles);
             }
         }
     }
 
-    public void allocateVehicles(ArrayList<Vehicle> fleet, ArrayList<Vehicle> vehicles, City city){
+    public void allocateVehicles(int size, ArrayList<Vehicle> fleet, ArrayList<Vehicle> vehicles){
         Vehicle vehicle = vehicles.get(0);
-        vehicle.changeCity(city);
+        //vehicle.changeCity(city);
 
-        fleet.add(vehicle);
-        vehicles.remove(0);
+        if (size != 0 && fleet.size() < size){
+            fleet.add(vehicle);
+            vehicles.remove(0);
+        }
     }
 
-    private void makeMove(Vehicle vehicle, int val){
+    private void makeMove(Vehicle vehicle, int step){
         int intersectionX = vehicle.getIntersection().getIntersectionX();
         int intersectionY = vehicle.getIntersection().getIntersectionY();
 
@@ -116,8 +128,10 @@ public class Simulation {
 
         if(hasArrived){
             if(vehicle.isPickup()){
-                vehicle.setPickup(false);
-                vehicle.setNextIntersection(vehicle.getCurrentRide().getFinishIntersection());
+                if(step >= vehicle.getCurrentRide().getEarliestStart()){
+                    vehicle.setPickup(false);
+                    vehicle.setNextIntersection(vehicle.getCurrentRide().getFinishIntersection());
+                }
             }else{
                 vehicle.tripCompleted();
                 vehicles.remove(vehicle);
@@ -139,8 +153,10 @@ public class Simulation {
             return Direction.RIGHT;
         }else if(y < nextY){
             return Direction.UP;
-        }else{
+        }else if(y > nextY){
             return Direction.DOWN;
+        }else{
+            return Direction.STOP;
         }
     }
 }

@@ -50,6 +50,7 @@ public class Bookings {
 
 
     public void addRide(Ride ride, City city){
+        // TODO sort the rides, earliest first
         switch (city){
             case CITY_A -> cityA.add(ride);
             case CITY_B -> cityB.add(ride);

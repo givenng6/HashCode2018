@@ -68,4 +68,11 @@ public class Vehicle {
     public Intersection getNextIntersection() {
         return nextIntersection;
     }
+
+    public int distance(Intersection intersection){
+        int x = Math.abs(this.intersection.getIntersectionX() - intersection.getIntersectionX());
+        int y = Math.abs(this.intersection.getIntersectionY() - intersection.getIntersectionY());
+
+        return x + y;
+    }
 }

@@ -3,7 +3,7 @@ public class Vehicle {
     private Intersection intersection;
     private Intersection nextIntersection;
     private boolean busy, pickup;
-    private int vehicleID;
+    private final int vehicleID;
     private Ride currentRide;
     private City city;
 
@@ -23,22 +23,27 @@ public class Vehicle {
     }
 
     public void changeCity(City city){
+
         this.city = city;
     }
 
     public City getCity(){
+
         return city;
     }
 
     public boolean isBusy() {
+
         return busy;
     }
 
     public boolean isPickup() {
+
         return pickup;
     }
 
     public void setPickup(boolean pickup) {
+
         this.pickup = pickup;
     }
 
@@ -62,10 +67,12 @@ public class Vehicle {
     }
 
     public Intersection getIntersection(){
+
         return intersection;
     }
 
     public Intersection getNextIntersection() {
+
         return nextIntersection;
     }
 

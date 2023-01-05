@@ -48,7 +48,6 @@ public class Bookings {
         return fleetD;
     }
 
-
     public void addRide(Ride ride, City city){
         // TODO sort the rides, earliest first
         switch (city){
@@ -69,6 +68,7 @@ public class Bookings {
     }
 
     public int[] getDistribution(){
+
         return new int[] {cityA.size(), cityB.size(), cityC.size(), cityD.size()};
     }
 }

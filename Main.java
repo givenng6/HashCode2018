@@ -18,7 +18,7 @@ public class Main{
         int numRides = 0;
         int bonus = 0;
 
-        File file = new File("input/d_metropolis.in");
+        File file = new File("input/b_should_be_easy.in");
 
         try {
             Scanner input = new Scanner(file);
@@ -113,6 +113,3 @@ public class Main{
         }
     }
 }
-
-
-

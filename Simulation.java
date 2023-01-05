@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Simulation {
 
@@ -18,10 +19,10 @@ public class Simulation {
 
     public void start(){
         for(int i = 0; i < totalSteps; i++){
-            assignRideToVehicle(bookings.getCityA(), bookings.getFleetA());
-            assignRideToVehicle(bookings.getCityB(), bookings.getFleetB());
-            assignRideToVehicle(bookings.getCityC(), bookings.getFleetC());
-            assignRideToVehicle(bookings.getCityD(), bookings.getFleetD());
+            assignRideToVehicle(bookings.getCityA(), bookings.getFleetA(), i);
+            assignRideToVehicle(bookings.getCityB(), bookings.getFleetB(), i);
+            assignRideToVehicle(bookings.getCityC(), bookings.getFleetC(), i);
+            assignRideToVehicle(bookings.getCityD(), bookings.getFleetD(), i);
 
             for (int j = 0; j < vehicles.size(); j++){
                 makeMove(vehicles.get(j), i);
@@ -31,34 +32,45 @@ public class Simulation {
         System.out.println("Rides completed " + totalRides);
     }
 
-    private Vehicle closetVehicle(Ride ride, ArrayList<Vehicle> vehicles){
-        // TODO find closet vehicle to ride
+    private Optional<Vehicle> closetVehicle(Ride ride, ArrayList<Vehicle> vehicles, int step){
         Vehicle closeVehicle = vehicles.get(0);
         int distance = closeVehicle.distance(ride.getStartIntersection());
 
         for(int i = 1; i < vehicles.size(); i++){
             Vehicle vehicle = vehicles.get(i);
-
-            if(vehicle.distance(ride.getStartIntersection()) < distance){
+            int currDistance = vehicle.distance(ride.getStartIntersection());
+            if(currDistance < distance){
                 closeVehicle = vehicle;
+                distance = currDistance;
             }
         }
 
-        return closeVehicle;
+        int totalDistance = distance + step + ride.getTotalDistance();
+
+        if(totalDistance > ride.getLatestFinish()){
+            return Optional.ofNullable(null);
+        }
+
+        return Optional.of(closeVehicle);
     }
 
-    private void assignRideToVehicle(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles){
+    private void assignRideToVehicle(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles, int step){
         if(rides.size() > 0 && vehicles.size() > 0) {
             Ride ride = rides.get(0);
             rides.remove(ride);
 
-            Vehicle vehicle = closetVehicle(ride, vehicles);
-            vehicle.assignRide(ride);
-            vehicle.setPickup(true);
+            Optional<Vehicle> optional = closetVehicle(ride, vehicles, step);
 
-            this.vehicles.add(vehicle);
-            vehicles.remove(vehicle);
-            assignRideToVehicle(rides, vehicles);
+            if(optional.isPresent()){
+                Vehicle vehicle = optional.get();
+                vehicle.assignRide(ride);
+                vehicle.setPickup(true);
+
+                this.vehicles.add(vehicle);
+                vehicles.remove(vehicle);
+            }
+
+            assignRideToVehicle(rides, vehicles, step);
         }
 
         // TODO Fix out of bound exception

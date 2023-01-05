@@ -22,10 +22,13 @@ public class Vehicle {
         return vehicleID;
     }
 
+    public void changeCity(City city){
+        this.city = city;
+    }
+
     public City getCity(){
         return city;
     }
-
 
     public boolean isBusy() {
         return busy;

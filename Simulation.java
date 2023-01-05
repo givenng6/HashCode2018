@@ -5,38 +5,48 @@ public class Simulation {
     private int totalSteps;
     private Bookings bookings;
 
-    private ArrayList<Vehicle> commutingRides;
+    private ArrayList<Vehicle> vehicles;
 
     public Simulation(Bookings bookings, int totalSteps){
         this.bookings = bookings;
         this.totalSteps = totalSteps;
-        this.commutingRides = new ArrayList<>();
+        this.vehicles = new ArrayList<>();
     }
 
     public void start(){
         for(int i = 0; i < totalSteps; i++){
-            //System.out.println("Steps " + i);
-            assignRidesToVehicles(bookings.getCityA(), bookings.getFleetA(), i);
-            assignRidesToVehicles(bookings.getCityB(), bookings.getFleetB(), i);
-            assignRidesToVehicles(bookings.getCityC(), bookings.getFleetC(), i);
-            assignRidesToVehicles(bookings.getCityD(), bookings.getFleetD(), i);
+            assignRideToVehicle(bookings.getCityA(), bookings.getFleetA(), i);
+            assignRideToVehicle(bookings.getCityB(), bookings.getFleetB(), i);
+            assignRideToVehicle(bookings.getCityC(), bookings.getFleetC(), i);
+            assignRideToVehicle(bookings.getCityD(), bookings.getFleetD(), i);
 
-            for(Vehicle vehicle : commutingRides){
-                makeMove(vehicle, i);
+            for (int j = 0; j < vehicles.size(); j++){
+                makeMove(vehicles.get(j), i);
             }
+
         }
     }
 
-    public void assignRidesToVehicles(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles, int val){
-        if(val == 0){
-            Vehicle vehicle = vehicles.get(0);
-            Ride ride = rides.get(0);
-            vehicle.setPickup(true);
-            vehicle.assignRide(ride);
-            commutingRides.add(vehicle);
+    private Vehicle closetVehicle(Ride ride, ArrayList<Vehicle> vehicles){
+        // TODO find closet vehicle to ride
 
-            // TODO Remove vehicle from original list
+        return vehicles.get(0);
+    }
+
+    private void assignRideToVehicle(ArrayList<Ride> rides, ArrayList<Vehicle> vehicles, int val){
+        if(rides.size() > 0 && vehicles.size() > 0) {
+            Ride ride = rides.get(0);
+            rides.remove(ride);
+
+            Vehicle vehicle = closetVehicle(ride, vehicles);
+            vehicle.assignRide(ride);
+            vehicle.setPickup(true);
+
+            this.vehicles.add(vehicle);
+            vehicles.remove(vehicle);
         }
+
+        // TODO If still vehicles but no rides, move all vehicles to different city
     }
 
     private void makeMove(Vehicle vehicle, int val){
@@ -65,7 +75,10 @@ public class Simulation {
                 vehicle.tripCompleted();
                 System.out.println("DONE : " + vehicle.getVehicleID());
                 System.out.println(val);
-                //TODO add back to available fleet
+                vehicles.remove(vehicle);
+
+                // add back to available fleet
+                bookings.addVehicle(vehicle, vehicle.getCity());
             }
         }
 
@@ -76,10 +89,10 @@ public class Simulation {
             return Direction.LEFT;
         }else if(x < nextX){
             return Direction.RIGHT;
-        }else if(y > nextY){
-            return Direction.DOWN;
-        }else{
+        }else if(y < nextY){
             return Direction.UP;
+        }else{
+            return Direction.DOWN;
         }
     }
 }

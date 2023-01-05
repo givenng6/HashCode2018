@@ -22,6 +22,10 @@ public class Vehicle {
         return vehicleID;
     }
 
+    public City getCity(){
+        return city;
+    }
+
 
     public boolean isBusy() {
         return busy;

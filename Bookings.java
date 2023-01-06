@@ -51,10 +51,10 @@ public class Bookings {
     public void addRide(Ride ride, City city){
         // TODO sort the rides, earliest first
         switch (city){
-            case CITY_A -> cityA.add(ride);
-            case CITY_B -> cityB.add(ride);
-            case CITY_C -> cityC.add(ride);
-            case CITY_D -> cityD.add(ride);
+            case CITY_A -> insertionSortRides(cityA, ride);
+            case CITY_B -> insertionSortRides(cityB, ride);
+            case CITY_C -> insertionSortRides(cityC, ride);
+            case CITY_D -> insertionSortRides(cityD, ride);
         }
     }
 
@@ -70,5 +70,21 @@ public class Bookings {
     public int[] getDistribution(){
 
         return new int[] {cityA.size(), cityB.size(), cityC.size(), cityD.size()};
+    }
+
+    public void insertionSortRides(ArrayList<Ride> list, Ride ride){
+        boolean added = false;
+        for (int i = 0; i <  list.size(); i++){
+            Ride currentRide = list.get(i);
+            if(currentRide.getEarliestStart() > ride.getEarliestStart()){
+                list.add(i, ride);
+                added = true;
+                break;
+            }
+        }
+
+        if(!added){
+            list.add(ride);
+        }
     }
 }

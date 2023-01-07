@@ -67,6 +67,7 @@ public class Simulation {
                 vehicle.setPickup(true);
 
                 this.vehicles.add(vehicle);
+
                 vehicles.remove(vehicle);
             }
 
